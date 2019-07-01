@@ -6,7 +6,9 @@
 package servlet;
 
 import bean.EmpBean;
+import bean.JspBean;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,10 +41,24 @@ public class Login extends HttpServlet {
         ServletContext application = request.getServletContext();
         String wId = request.getParameter("empId");
         String wPass = request.getParameter("empPass");
+        String contentPage="login.jsp";
+        JspBean data =null;
         EmpBean wBean = new EmpBean();
         wBean.setEmpId(wId);
         wBean.setEmpPass(wPass);
-        
+        if(application.getAttribute("a_data")!=null){
+            data = (JspBean)application.getAttribute("a_data");
+        }else{
+            data = new JspBean();
+            application.setAttribute("a_data", data);
+        }
+        if(wBean.loginCheck(data.getEmps())){ //ログイン    
+            contentPage="user.jsp";
+            session.setAttribute("s_loginUser", data);
+        }
+        session.setAttribute("s_contentPage", contentPage);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
