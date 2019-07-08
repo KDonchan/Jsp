@@ -8,6 +8,9 @@ package servlet;
 import bean.EmpBean;
 import bean.JspBean;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -52,9 +55,15 @@ public class Login extends HttpServlet {
             data = new JspBean();
             application.setAttribute("a_data", data);
         }
-        if(wBean.loginCheck(data.getEmps())){ //ログイン    
-            contentPage="user.jsp";
-            session.setAttribute("s_loginUser", data);
+        try {
+            if(wBean.loginCheck(data.getEmps())){ //ログイン
+                contentPage="user.jsp";
+                session.setAttribute("s_loginUser", wBean);
+            }else{ //ログインできなかった時
+                request.setAttribute("r_errMsg", "IDかパスワードが違います");
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         session.setAttribute("s_contentPage", contentPage);
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");

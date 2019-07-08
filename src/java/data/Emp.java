@@ -5,6 +5,11 @@
  */
 package data;
 
+import gen.Md;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author j-knakagami2
@@ -17,7 +22,11 @@ public class Emp {
 
     public Emp(String empId, String empPass, String empName, String empKana, String empSec) {
         this.empId = empId;
-        this.empPass = empPass;
+        try {
+            this.empPass = Md.sha256(empPass);
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Empコンストラクタ　sha256エラー："+ex.getMessage());
+        }
         this.empName = empName;
         this.empKana = empKana;
         this.empSec = empSec;
@@ -36,7 +45,11 @@ public class Emp {
     }
 
     public void setEmpPass(String empPass) {
-        this.empPass = empPass;
+        try {
+            this.empPass = Md.sha256(empPass);
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Emp.setEmpPass sha256エラー："+ex.getMessage());
+        }
     }
 
     public String getEmpName() {

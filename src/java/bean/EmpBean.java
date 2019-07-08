@@ -6,7 +6,11 @@
 package bean;
 
 import data.Emp;
+import gen.Md;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -66,11 +70,12 @@ public class EmpBean {
         this.empSec = empSec;
     }
     
-    public boolean loginCheck(List<Emp> emps){
+    public boolean loginCheck(List<Emp> emps) throws NoSuchAlgorithmException{
         boolean flg=false;
+        
         for(Emp a  : emps){
             if(a.getEmpId().equals(empId) &&
-                    a.getEmpPass().equals(empPass)){
+                    a.getEmpPass().equals(Md.sha256(empPass))){
                 flg = true;
                 empName = a.getEmpName();
                 empKana = a.getEmpKana();

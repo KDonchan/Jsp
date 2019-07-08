@@ -5,11 +5,19 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%
+    String errMsg="",empId = "";
+    if(request.getAttribute("r_errMsg")!=null){
+        errMsg = (String)request.getAttribute("r_errMsg");
+        request.removeAttribute("r_errMsg");
+        empId = request.getParameter("empId");
+    }
+    %>
 <form action="Login">
     <div class="inputLine">
         <div class="inputHead">ID</div>
-        <div class="input"><input type="text" name="empId"/></div>
+        <div class="input"><input type="text" name="empId" value="<%=empId%>"/></div>
+        <%=errMsg%>
     </div>
     <div class="inputLine">
         <div class="inputHead">ﾊﾟｽﾜｰﾄﾞ</div>
